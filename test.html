@@ -10,6 +10,13 @@
       .sparktime {
         border: 1px solid #BBBBFF;
       }
+
+      .sparktime-info {
+        font-face: monospace;
+        font-size: 8px;
+        border: 1px solid #BBBBFF;
+        background: #BBBBBB;
+      }
     </style>
   </head>
   <body>
@@ -42,7 +49,6 @@
 
         var st = new SparkTime(key, ['mark']);
 
-        st.key($('.st_key'));
         st.apply($('.st'), td);
       }
 

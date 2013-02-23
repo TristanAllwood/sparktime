@@ -41,17 +41,7 @@ function SparkTime(key_data, attributes) {
   var width = numberOfDays * DAY_WIDTH;
   var height = 5;
 
-
-  this.key = function(elem) {
-  }
-
-  this.apply = function(elem, data) {
-    var newCanvas = $('<canvas/>',{'class':'sparktime'}).attr({'width':width,'height':height});
-
-    var ctx=newCanvas[0].getContext("2d");
-    ctx.globalAlpha = 1.0;
-    ctx.lineWidth = 2;
-
+  var renderDays = function(ctx) {
     /* render the days in alternating colours */
     for(var i = 0  ; i < numberOfDays ; i++) {
       /* make sure weekends are darker */
@@ -64,13 +54,11 @@ function SparkTime(key_data, attributes) {
       } else {
         ctx.fillStyle = "#E0E0E0";
       }
-
-
       ctx.fillRect(i * DAY_WIDTH, 0, DAY_WIDTH, height);
-
     }
+  }
 
-
+  var renderNow = function(ctx) {
     /* does right now fall between two points? */
     /* if so render it in yellow */
     if (now > min_date && now < max_date) {
@@ -81,7 +69,9 @@ function SparkTime(key_data, attributes) {
       ctx.strokeStyle = "rgba(255,125,0,0.3)";
       ctx.stroke()
     }
+  }
 
+  var renderKeys = function(ctx) {
     /* render the keys in red */
     ctx.beginPath();
     for(var k in core_data) {
@@ -91,21 +81,56 @@ function SparkTime(key_data, attributes) {
     }
     ctx.strokeStyle = "#FF0000";
     ctx.stroke();
+  }
 
-    /* render the local data in black */
-    ctx.beginPath();
-    for(var k in attributes) {
-      for (var v in data[attributes[k]]) {
-        var time = new Date(data[attributes[k]][v]);
+  this.apply = function(elem, data) {
+    var newCanvas = $('<canvas/>',{'class':'sparktime'}).attr({'width':width,'height':height});
 
-        var offset = Math.round(((time - min_date) / ONE_DAY) * DAY_WIDTH);
-        ctx.arc(offset, height/2, height / 3, 0, 2*Math.PI);
+    var ctx=newCanvas[0].getContext("2d");
+    ctx.globalAlpha = 1.0;
+    ctx.lineWidth = 2;
+
+    var newPara = $('<p/>', {'class':'sparktime-info', 'style': 'position: absolute'})
+
+    var render = function() {
+      renderDays(ctx);
+      renderNow(ctx);
+      renderKeys(ctx);
+
+      /* render the local data in black */
+      ctx.beginPath();
+      for(var k in attributes) {
+        for (var v in data[attributes[k]]) {
+          var time = new Date(data[attributes[k]][v]);
+
+          var offset = Math.round(((time - min_date) / ONE_DAY) * DAY_WIDTH);
+          ctx.arc(offset, height/2, height / 3, 0, 2*Math.PI);
+        }
       }
+      ctx.fillStyle = "#000000";
+      ctx.fill();
     }
-    ctx.fillStyle = "#000000";
-    ctx.fill();
 
-    elem.replaceWith(newCanvas);
+    newCanvas.mouseenter(function() {
+    });
+
+    newCanvas.mouseleave(function() {
+      newPara.text("");
+    });
+
+    newCanvas.mousemove(function(ev) {
+      var xpos = ev.pageX - newCanvas.offset().left;
+      var time = new Date(Math.round(((xpos * ONE_DAY) / DAY_WIDTH) + min_date.getTime()));
+      newPara.text(time);
+    });
+
+    render();
+
+    var all = $('<div/>');
+    all.append(newCanvas);
+    all.append(newPara);
+
+    elem.replaceWith(all);
   }
 
 }
