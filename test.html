@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Test SparkTime</title>
+
+    <style>
+      body {
+        background: #CCCCFF;
+      }
+      .sparktime {
+        border: 1px solid #BBBBFF;
+      }
+    </style>
+  </head>
+  <body>
+
+    <table>
+      <tr>
+        <td>Name</td>
+        <td><span class="stkey"/></td>
+        <td>Person</td>
+      </tr>
+      <tr>
+        <td>xyz233</td>
+        <td><span class="st"/></td>
+        <td>tty224</td>
+      </tr>
+
+    <script src="jquery-1.9.1.min.js"></script>
+    <script src="sparktime.js"></script>
+
+    <script>
+
+      function begin() {
+
+        var key = { start: new Date('2013-02-01 07:00:00.000000')
+                  , end  : new Date('2013-03-01 00:00:00.000000')
+                  }
+
+        var td = { mark : [new Date('2013-02-18 14:55:16.149432')]
+                 }
+
+        var st = new SparkTime(key, ['mark']);
+
+        st.key($('.st_key'));
+        st.apply($('.st'), td);
+      }
+
+      $(begin);
+
+    </script>
+  </body>
+</html>
