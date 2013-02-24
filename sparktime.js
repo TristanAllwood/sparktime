@@ -91,6 +91,7 @@ function SparkTime(key_data, attributes) {
     ctx.lineWidth = 2;
 
     var newPara = $('<p/>', {'class':'sparktime-info', 'style': 'position: absolute'})
+    newPara.hide();
 
     var render = function() {
       renderDays(ctx);
@@ -115,13 +116,14 @@ function SparkTime(key_data, attributes) {
     });
 
     newCanvas.mouseleave(function() {
-      newPara.text("");
+      newPara.hide();
     });
 
     newCanvas.mousemove(function(ev) {
       var xpos = ev.pageX - newCanvas.offset().left;
       var time = new Date(Math.round(((xpos * ONE_DAY) / DAY_WIDTH) + min_date.getTime()));
       newPara.text(time);
+      newPara.show();
     });
 
     render();
