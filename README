@@ -3,8 +3,9 @@ SparkTime
 A work-in progress inline timestamp visualiser, suitable for use in
 tables to allow quick comparison of the relative time events occured in.
 
+See test.html for a sample.
 
-See test.html for a sample.  Features:
+Features:
   * Red markers for fixed times across all instances of a sparktime.
     (e.g. start time, end time)
   * Feint orange marker for right now, if within start/end ranges.
