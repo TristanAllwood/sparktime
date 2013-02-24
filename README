@@ -1,0 +1,17 @@
+SparkTime
+
+A work-in progress inline timestamp visualiser, suitable for use in
+tables to allow quick comparison of the relative time events occured in.
+
+
+See test.html for a sample.  Features:
+  * Red markers for fixed times across all instances of a sparktime.
+    (e.g. start time, end time)
+  * Feint orange marker for right now, if within start/end ranges.
+  * Black dots for "events".
+  * Background band highlights weekend/weekdays differently.
+  * Hover shows approx time the mouse is looking at.
+
+This is currently a quick prototype/proof of concept - it needs a lot of
+work/polish before it's generally usable.  Uses jquery 1.9.1 (bundled) and
+html5 canvas. Only tested on chromium so far...
